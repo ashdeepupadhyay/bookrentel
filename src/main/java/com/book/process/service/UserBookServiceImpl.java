@@ -61,7 +61,9 @@ public class UserBookServiceImpl implements UserBookService {
 
         books.stream().forEach(book->{
             Long exceedDay = Duration.between(book.getRentDate().toLocalDateTime(), LocalDateTime.now()).toDays();
-            Double price = book.getFixedPrice()*exceedDay;
+            Double price = book.getInitialPrice();
+            if(exceedDay-book.getDays()>0)
+                price=price+(exceedDay-book.getDays())*book.getFixedPrice();
             Double sum=bookListTO.getTotalCharges()+price;
             bookListTO.setTotalCharges(sum);
             BookTO bookTO = new BookTO(book.getBookId(),book.getName(),book.getAuthor(),book.getCategory(),book.getRentDate().toString(),price);
