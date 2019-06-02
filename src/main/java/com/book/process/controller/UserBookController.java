@@ -1,6 +1,7 @@
 package com.book.process.controller;
 
 import com.book.process.service.UserBookService;
+import com.book.process.to.BookListTO;
 import com.book.process.to.BookTO;
 import com.book.process.to.SelectBookTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class UserBookController {
     }
 
     @RequestMapping(value = "/bookDetails",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookTO> getClientBooks(@RequestHeader("clientId")Long clientId)
+    public BookListTO getClientBooks(@RequestHeader("clientId")Long clientId)
     {
         return userBookService.getClientBooks(clientId);
     }

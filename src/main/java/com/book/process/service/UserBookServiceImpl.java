@@ -2,6 +2,7 @@ package com.book.process.service;
 
 import com.book.process.bo.BookBO;
 import com.book.process.dao.repository.BookRepository;
+import com.book.process.to.BookListTO;
 import com.book.process.to.BookTO;
 import com.book.process.to.SelectBookTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,17 +49,26 @@ public class UserBookServiceImpl implements UserBookService {
     }
 
     @Override
-    public List<BookTO> getClientBooks(Long clientId) {
+    public BookListTO getClientBooks(Long clientId) {
         if(clientId==null)
             System.out.println("clientId missing");
         List<BookBO> books = bookRepository.getBooksForClient(clientId);
         List<BookTO> bookList = new ArrayList<>();
+
+        BookListTO bookListTO = new BookListTO();
+
+        bookListTO.setTotalCharges(0D);
+
         books.stream().forEach(book->{
             Long exceedDay = Duration.between(book.getRentDate().toLocalDateTime(), LocalDateTime.now()).toDays();
             Double price = book.getFixedPrice()*exceedDay;
+            Double sum=bookListTO.getTotalCharges()+price;
+            bookListTO.setTotalCharges(sum);
             BookTO bookTO = new BookTO(book.getBookId(),book.getName(),book.getAuthor(),book.getCategory(),book.getRentDate().toString(),price);
             bookList.add(bookTO);
+
         });
-        return bookList;
+        bookListTO.setBookList(bookList);
+        return bookListTO;
     }
 }

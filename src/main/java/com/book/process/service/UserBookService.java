@@ -1,5 +1,6 @@
 package com.book.process.service;
 
+import com.book.process.to.BookListTO;
 import com.book.process.to.BookTO;
 import com.book.process.to.SelectBookTO;
 import org.springframework.http.ResponseEntity;
@@ -12,5 +13,5 @@ public interface UserBookService {
 
      ResponseEntity<String> updateBookReturn(SelectBookTO returnBook);
 
-     List<BookTO> getClientBooks(Long clientId);
+     BookListTO getClientBooks(Long clientId);
 }
